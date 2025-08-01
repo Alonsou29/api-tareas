@@ -1,5 +1,7 @@
 package com.tareas.api.tareas.services;
 
+import com.tareas.api.tareas.persistence.entity.Tarea;
+import com.tareas.api.tareas.persistence.repository.TareasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.tareas.api.tareas.persistence.entity.Usuario;
@@ -14,7 +16,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private TareaService tareaService;
+    private TareasRepository tareaRepository;
 
     public List<Usuario> getUsuarios(){
         return usuarioRepository.findAll();
@@ -41,7 +43,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Usuario deleteUsuario(String username) {
         try{
             Usuario us = usuarioRepository.getUsuarioByUsername(username);
-            tareaService.deleteTareaByUserId(us.getId());
+            List<Tarea> tareas = tareaRepository.findAllByUsuario_id(us.getId());
+            tareaRepository.deleteAll(tareas);
             usuarioRepository.delete(us);
             return us;
         }catch(Exception e){

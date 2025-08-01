@@ -7,8 +7,11 @@ import java.util.List;
 
 public interface TareaService {
 
-    List<Tarea> deleteTareaByUserId(int id);
-
+    Tarea addTarea(String username, String nombre, Tarea tarea);
+    Tarea updateTarea(Tarea tarea);
+    Tarea deleteTarea(int id);
     List<Tarea> deleteTareaByNombre(Tipo tipo);
+    List<Tarea> getTareasByUsername(String username);
+
 
 }

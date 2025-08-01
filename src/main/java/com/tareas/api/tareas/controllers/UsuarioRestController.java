@@ -17,25 +17,25 @@ public class UsuarioRestController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> getUsuarios(){
+    public ResponseEntity<List<?>> getUsuarios(){
         List<Usuario> usuarios = usuarioService.getUsuarios();
         return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/{username}")
-    private ResponseEntity<Usuario> getUsuarioByUsername(@PathVariable String username){
+    private ResponseEntity<?> getUsuarioByUsername(@PathVariable String username){
         Usuario us = usuarioService.getUsuarioByUsername(username);
         return ResponseEntity.ok(us);
     }
 
     @PutMapping("/edit")
-    private ResponseEntity<Usuario> editarUsuario(@RequestBody Usuario usuario){
+    private ResponseEntity<?> editarUsuario(@RequestBody Usuario usuario){
         usuarioService.editUsuario(usuario);
         return ResponseEntity.ok(usuario);
     }
 
     @DeleteMapping("/{username}")
-    private ResponseEntity<Usuario> deleteUsuario(@PathVariable String username){
+    private ResponseEntity<?> deleteUsuario(@PathVariable String username){
         Usuario us = usuarioService.deleteUsuario(username);
         return ResponseEntity.ok(us);
     }

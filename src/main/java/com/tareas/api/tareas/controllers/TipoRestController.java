@@ -10,25 +10,25 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/tipos")
+@RequestMapping("/tipo")
 public class TipoRestController {
 
     @Autowired
     TiposServiceImpl tiposService;
 
     @GetMapping
-    private ResponseEntity<List<Tipo>> getAllTipos(){
+    private ResponseEntity<List<?>> getAllTipos(){
         List<Tipo> tipos = tiposService.getAlltipos();
         return ResponseEntity.ok(tipos);
     }
 
     @PostMapping
-    private ResponseEntity<Tipo> addTipo(@RequestBody Tipo tipo){
+    private ResponseEntity<?> addTipo(@RequestBody Tipo tipo){
         return ResponseEntity.ok(tiposService.addTipo(tipo));
     }
 
     @DeleteMapping("/{nombre}")
-    private ResponseEntity<Tipo> deleteTipo(@PathVariable String nombre){
+    private ResponseEntity<?> deleteTipo(@PathVariable String nombre){
         Tipo tp = tiposService.deleteTipo(nombre);
         return ResponseEntity.ok(tp);
     }

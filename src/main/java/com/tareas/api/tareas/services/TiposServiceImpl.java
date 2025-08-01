@@ -23,10 +23,14 @@ public class TiposServiceImpl implements TiposService {
     }
 
     public Tipo deleteTipo(String nombre) {
-        Tipo tipo = tiposRepository.findByNombre(nombre);
-        tareaService.deleteTareaByNombre(tipo);
-        tiposRepository.delete(tipo);
-        return tipo;
+        try{
+            Tipo tipo = tiposRepository.findByNombre(nombre);
+            tareaService.deleteTareaByNombre(tipo);
+            tiposRepository.delete(tipo);
+            return tipo;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
