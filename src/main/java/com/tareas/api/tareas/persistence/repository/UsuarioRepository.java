@@ -9,6 +9,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     public Usuario getUsuarioByUsername(String username);
 
-    public Usuario getUsuarioById(Integer id);
+    public Usuario getUsuarioById(int id);
 
 }

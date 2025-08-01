@@ -23,7 +23,7 @@ public class UsuarioRestController {
     }
 
     @GetMapping("/{username}")
-    private ResponseEntity<Usuario> getUsuariosHola(@PathVariable String username){
+    private ResponseEntity<Usuario> getUsuarioByUsername(@PathVariable String username){
         Usuario us = usuarioService.getUsuarioByUsername(username);
         return ResponseEntity.ok(us);
     }
@@ -36,7 +36,8 @@ public class UsuarioRestController {
 
     @DeleteMapping("/{username}")
     private ResponseEntity<Usuario> deleteUsuario(@PathVariable String username){
-
+        Usuario us = usuarioService.deleteUsuario(username);
+        return ResponseEntity.ok(us);
     }
 
 }
