@@ -1,5 +1,6 @@
 package com.tareas.api.tareas.services;
 
+import com.tareas.api.tareas.DTO.infoTareaResponse;
 import com.tareas.api.tareas.persistence.entity.Tarea;
 import com.tareas.api.tareas.persistence.entity.Tipo;
 import com.tareas.api.tareas.persistence.entity.Usuario;
@@ -50,6 +51,8 @@ public class TareaServiceImpl implements TareaService {
                 tareaUp.setTitulo(tarea.getTitulo());
                 tareaUp.setFecha(tarea.getFecha());
                 tareaUp.setRealizado(tarea.isRealizado());
+                tareaUp.setUsuario(tareaUp.getUsuario());
+                tareaUp.setTipo(tareaUp.getTipo());
                 return tareasRepository.save(tareaUp);
             }else{
                 return null;
@@ -66,7 +69,7 @@ public class TareaServiceImpl implements TareaService {
             tareasRepository.delete(tareaUp);
             return tareaUp;
         }
-        return null;
+        return tareaUp;
     }
 
     @Override
@@ -80,5 +83,33 @@ public class TareaServiceImpl implements TareaService {
     public List<Tarea> getTareasByUsername(String user) {
         Usuario usu = usuarioRepository.getUsuarioByUsername(user);
         return tareasRepository.findAllByUsuario_id(usu.getId());
+    }
+
+    @Override
+    public List<Tarea> getTateasByDate(String username, LocalDate fecha) {
+        Usuario usuario = usuarioRepository.getUsuarioByUsername(username);
+        if(usuario != null){
+            List<Tarea> tareas = tareasRepository.findAllByFechaAndUsuario_id(fecha, usuario.getId());
+            return tareas;
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public List<Tarea> getTareasByRealizada(String username, boolean realizada) {
+        Usuario usuario = usuarioRepository.getUsuarioByUsername(username);
+        if(usuario != null){
+            List<Tarea> tareas = tareasRepository.findAllByRealizadoAndUsuario_id(realizada, usuario.getId());
+            return tareas;
+        }else{
+            return null;
+        }
+
+    }
+
+    @Override
+    public List<infoTareaResponse> getInfoTareas() {
+        return tareasRepository.getInfoTareas();
     }
 }

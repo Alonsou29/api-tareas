@@ -1,8 +1,10 @@
 package com.tareas.api.tareas.services;
 
+import com.tareas.api.tareas.DTO.infoTareaResponse;
 import com.tareas.api.tareas.persistence.entity.Tarea;
 import com.tareas.api.tareas.persistence.entity.Tipo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface TareaService {
@@ -12,6 +14,9 @@ public interface TareaService {
     Tarea deleteTarea(int id);
     List<Tarea> deleteTareaByNombre(Tipo tipo);
     List<Tarea> getTareasByUsername(String username);
+    List<Tarea> getTateasByDate(String username, LocalDate fecha);
+    List<Tarea> getTareasByRealizada(String username, boolean realizada);
+    List<infoTareaResponse> getInfoTareas();
 
 
 }
