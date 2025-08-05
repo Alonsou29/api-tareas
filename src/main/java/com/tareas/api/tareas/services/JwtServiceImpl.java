@@ -1,6 +1,7 @@
 package com.tareas.api.tareas.services;
 
 import com.tareas.api.tareas.persistence.entity.Usuario;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -30,10 +31,22 @@ public class JwtServiceImpl implements JwtService {
         return  BuildToken(usuario,refreshExpiration);
     }
 
+    @Override
+    public String extractUsername(String token) {
+        Claims jwtToken = Jwts.parserBuilder().setSigningKey(secretkey).build().parseClaimsJws(token).getBody();
+        return jwtToken.getSubject();
+    }
+
+    @Override
+    public boolean isTokenValid(String token, Usuario usuario) {
+        String username =  extractUsername(token);
+        return username.equals(usuario.getUsername()) && !isTokenExpired(token);
+    }
+
     private String BuildToken(Usuario usuario, Long expiration) {
         return Jwts.builder()
                 .setId(Integer.valueOf(usuario.getId()).toString())
-                .setClaims(Map.of("name", usuario.getName()))
+                .setClaims(Map.of("name",usuario.getName()))
                 .setSubject(usuario.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
@@ -44,5 +57,14 @@ public class JwtServiceImpl implements JwtService {
     private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretkey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    private Date extractExpiration(String token) {
+        Claims jwtToken = Jwts.parserBuilder().setSigningKey(secretkey).build().parseClaimsJws(token).getBody();
+        return jwtToken.getExpiration();
     }
 }

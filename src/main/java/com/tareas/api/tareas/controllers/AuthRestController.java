@@ -5,12 +5,10 @@ import com.tareas.api.tareas.DTO.TokenResponse;
 import com.tareas.api.tareas.persistence.entity.Usuario;
 import com.tareas.api.tareas.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.token.TokenService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,7 +26,13 @@ public class AuthRestController {
 
     @PostMapping("/login")
     private ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-
+        TokenResponse token = authService.login(loginRequest);
+        return ResponseEntity.ok(token);
     }
 
+    @PostMapping("/refresh")
+    private ResponseEntity<?> refresh(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        TokenResponse tkr = authService.refresh(token);
+        return ResponseEntity.ok(tkr);
+    }
 }

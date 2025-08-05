@@ -8,4 +8,5 @@ public interface AuthService {
 
      TokenResponse registro(Usuario usuario);
      TokenResponse login(LoginRequest request);
+     TokenResponse refresh(String token);
 }
